@@ -91,22 +91,13 @@ A: Making the data less biased.
 
 Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
 
-```{r cache = TRUE}
-df2$day <- weekdays(as.Date(df2$date))
+```{r}
+df2$date = as.Date(df2$date)
+df2$day <- weekdays(df2$date) == "Sunday" | weekdays(df2$date) == "Saturday"
 head(df2)
 
-for (i in 1:length(df2$day)) {
-        if (df2$day[i] == "Monday" | df2$day[i] == "Tuesday" | df2$day[i] == "Wednesday" | df2$day[i] == "Thursday" | df2$day[i] == "Friday") {
-                df2$day[i] = "Weekday"
-        }
-        else {
-                df2$day[i] = "Weekend"
-        }
-        }
-
-head(df2)
-df2_weekday <- df2[df2$day == "Weekday",]
-df2_weekend <- df2[df2$day == "Weekend",]
+df2_weekday <- df2[df2$day == FALSE,]
+df2_weekend <- df2[df2$day == TRUE,]
 
 ```
 
