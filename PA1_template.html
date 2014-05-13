@@ -332,43 +332,23 @@ A: Making the data less biased.   </p>
 
 <p>Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.</p>
 
-<pre><code class="r">df2$day &lt;- weekdays(as.Date(df2$date))
+<pre><code class="r">df2$date = as.Date(df2$date)
+df2$day &lt;- weekdays(df2$date) == &quot;Sunday&quot; | weekdays(df2$date) == &quot;Saturday&quot;
 head(df2)
 </code></pre>
 
-<pre><code>##     steps       date interval    day
-## 1 1.71698 2012-10-01        0 Monday
-## 2 0.33962 2012-10-01        5 Monday
-## 3 0.13208 2012-10-01       10 Monday
-## 4 0.15094 2012-10-01       15 Monday
-## 5 0.07547 2012-10-01       20 Monday
-## 6 2.09434 2012-10-01       25 Monday
+<pre><code>##     steps       date interval   day
+## 1 1.71698 2012-10-01        0 FALSE
+## 2 0.33962 2012-10-01        5 FALSE
+## 3 0.13208 2012-10-01       10 FALSE
+## 4 0.15094 2012-10-01       15 FALSE
+## 5 0.07547 2012-10-01       20 FALSE
+## 6 2.09434 2012-10-01       25 FALSE
 </code></pre>
 
 <pre><code class="r">
-for (i in 1:length(df2$day)) {
-    if (df2$day[i] == &quot;Monday&quot; | df2$day[i] == &quot;Tuesday&quot; | df2$day[i] == &quot;Wednesday&quot; | 
-        df2$day[i] == &quot;Thursday&quot; | df2$day[i] == &quot;Friday&quot;) {
-        df2$day[i] = &quot;Weekday&quot;
-    } else {
-        df2$day[i] = &quot;Weekend&quot;
-    }
-}
-
-head(df2)
-</code></pre>
-
-<pre><code>##     steps       date interval     day
-## 1 1.71698 2012-10-01        0 Weekday
-## 2 0.33962 2012-10-01        5 Weekday
-## 3 0.13208 2012-10-01       10 Weekday
-## 4 0.15094 2012-10-01       15 Weekday
-## 5 0.07547 2012-10-01       20 Weekday
-## 6 2.09434 2012-10-01       25 Weekday
-</code></pre>
-
-<pre><code class="r">df2_weekday &lt;- df2[df2$day == &quot;Weekday&quot;, ]
-df2_weekend &lt;- df2[df2$day == &quot;Weekend&quot;, ]
+df2_weekday &lt;- df2[df2$day == FALSE, ]
+df2_weekend &lt;- df2[df2$day == TRUE, ]
 </code></pre>
 
 <p>Make a panel plot containing a time series plot (i.e. type = &ldquo;l&rdquo;) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis)</p>
