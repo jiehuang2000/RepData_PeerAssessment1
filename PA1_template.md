@@ -185,47 +185,25 @@ Create a new factor variable in the dataset with two levels – “weekday” an
 
 
 ```r
-df2$day <- weekdays(as.Date(df2$date))
+df2$date = as.Date(df2$date)
+df2$day <- weekdays(df2$date) == "Sunday" | weekdays(df2$date) == "Saturday"
 head(df2)
 ```
 
 ```
-##     steps       date interval    day
-## 1 1.71698 2012-10-01        0 Monday
-## 2 0.33962 2012-10-01        5 Monday
-## 3 0.13208 2012-10-01       10 Monday
-## 4 0.15094 2012-10-01       15 Monday
-## 5 0.07547 2012-10-01       20 Monday
-## 6 2.09434 2012-10-01       25 Monday
+##     steps       date interval   day
+## 1 1.71698 2012-10-01        0 FALSE
+## 2 0.33962 2012-10-01        5 FALSE
+## 3 0.13208 2012-10-01       10 FALSE
+## 4 0.15094 2012-10-01       15 FALSE
+## 5 0.07547 2012-10-01       20 FALSE
+## 6 2.09434 2012-10-01       25 FALSE
 ```
 
 ```r
 
-for (i in 1:length(df2$day)) {
-    if (df2$day[i] == "Monday" | df2$day[i] == "Tuesday" | df2$day[i] == "Wednesday" | 
-        df2$day[i] == "Thursday" | df2$day[i] == "Friday") {
-        df2$day[i] = "Weekday"
-    } else {
-        df2$day[i] = "Weekend"
-    }
-}
-
-head(df2)
-```
-
-```
-##     steps       date interval     day
-## 1 1.71698 2012-10-01        0 Weekday
-## 2 0.33962 2012-10-01        5 Weekday
-## 3 0.13208 2012-10-01       10 Weekday
-## 4 0.15094 2012-10-01       15 Weekday
-## 5 0.07547 2012-10-01       20 Weekday
-## 6 2.09434 2012-10-01       25 Weekday
-```
-
-```r
-df2_weekday <- df2[df2$day == "Weekday", ]
-df2_weekend <- df2[df2$day == "Weekend", ]
+df2_weekday <- df2[df2$day == FALSE, ]
+df2_weekend <- df2[df2$day == TRUE, ]
 ```
 
 
